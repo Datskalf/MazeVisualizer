@@ -82,5 +82,6 @@ class Maze:
 
 if __name__ == "__main__":
     maze = Maze()
-    maze.readMazeFromFile("input.txt")
+    inputFile = input("Please enter the file location of the maze file: ")
+    maze.readMazeFromFile(inputFile)
     maze.drawMaze()
