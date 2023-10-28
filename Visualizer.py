@@ -1,5 +1,6 @@
 from enum import Enum
 from PIL import Image, ImageDraw
+from tkinter import filedialog
 
 class TileType(Enum):
     UNKNOWN = "0"
@@ -71,17 +72,51 @@ class Maze:
         
         im.show()
 
+        self.im = im
+
 
         pass
 
-    def outputMaze(self) -> None:
+    def saveImage(self, defaultName: str) -> None:
+        f = filedialog.asksaveasfile(
+            initialfile=defaultName,
+            mode="wb",
+            confirmoverwrite=True,
+            filetypes=(
+                ("Portable Network Graphics (*.png)", "*.png"),
+                ("All Files (*.*)", "*.*")
+            ),
+            defaultextension=".png"
+        )
+        if not f:
+            return
+        filename = f.name
+        extension = filename.split(".")[-1]
+        self.im.save(filename, extension)
+        f.close()
+
+
+    def outputMazeToConsole(self) -> None:
         for row in self.mazeTiles:
             for tile in row:
                 print(str(tile), end="")
             print("\n")
 
 if __name__ == "__main__":
+    print("Select the maze file from the dialog box")
+    fileName = filedialog.askopenfilename(
+        filetypes = (
+            ("Text files (*.txt)", "*.txt"),
+            ("All files (*.*)", "*.*")
+        ),
+        defaultextension=".txt"
+    )
+
     maze = Maze()
-    inputFile = input("Please enter the file location of the maze file: ")
-    maze.readMazeFromFile(inputFile)
+    maze.readMazeFromFile(fileName)
     maze.drawMaze()
+
+    wishToSave = input("Do you want to save this image [y/n]: ").lower() == "y"
+    if wishToSave:
+        name = fileName.split("/")[-1]
+        maze.saveImage(name)
