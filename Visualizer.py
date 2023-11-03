@@ -6,7 +6,7 @@ import sys
 class TileType(Enum):
     UNKNOWN = "0"
     WALL = "X"
-    EMPTY = "-"
+    EMPTY = " "
     START = "S"
     END = "E"
 
