@@ -57,6 +57,7 @@ class Maze:
 
         imgDraw = ImageDraw.Draw(im)
         for y, row in enumerate(self.mazeTiles):
+            print(f"Writing row {y+1} out of {len(self.mazeTiles)}")
             for x, tile in enumerate(row):
                 area = [(x*self.tileSizePx, y*self.tileSizePx), ((x+1)*self.tileSizePx - 1, (y+1)*self.tileSizePx - 1)]
                 fill = "#f00"
