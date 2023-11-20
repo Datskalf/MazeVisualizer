@@ -4,28 +4,43 @@ from tkinter import filedialog
 import sys
 
 class TileType(Enum):
+    """
+    An enumerator to make tile types easier to read.
+    """
+    
     UNKNOWN = "0"
     WALL = "X"
-    EMPTY = " "
+    EMPTY = "-"
     START = "S"
     END = "E"
 
 class Tile:
+    """
+    The tile contains the character data, as well as a static method to convert a character to TileType.
+    """
     def __init__(self, type: TileType) -> None:
         self.type = type
     
     def __str__(self) -> str:
         return self.type.value
     
-
     @staticmethod
     def getTileType(tileChar: str) -> TileType:
+        """
+        Converts the character provided to a TileType
+        """
+        tileChar = "-" if tileChar == " " else tileChar
         if tileChar in ["X", "-", "S", "E"]:
             return TileType(tileChar)
         return TileType.UNKNOWN
         
 
 class Maze:
+    """
+    The maze will read in the maze data from a file or string.
+    It will then colour an n by n area of an image with the colour corresponding tile colour.
+    Finally, ask the user where they want to save the image. 
+    """
     mazeTiles = []
     tileSizePx = 8
 
@@ -33,6 +48,9 @@ class Maze:
         pass
         
     def readMazeFromFile(self, filePath: str) -> None:
+        """
+        Read in the maze data from the file.
+        """
         data = ""
         print(f"Opening file {filePath}")
         with open(filePath, "r") as file:
@@ -41,6 +59,9 @@ class Maze:
         self.readMazeFromString(data)
 
     def readMazeFromString(self, maze: str) -> None:
+        """
+        Create and populate a 2D array of tiles from the inputted string.
+        """
         self.mazeTiles = []
         splStr = maze.split("\n")
         for i, row in enumerate(splStr):
@@ -54,6 +75,9 @@ class Maze:
 
 
     def drawMaze(self) -> None:
+        """
+        For each tile, colour an n by n area of the image by the corresponding colour.
+        """
         size = (self.mazeWidth * self.tileSizePx, self.mazeHeight * self.tileSizePx)
         im = Image.new("RGB", size)
 
@@ -82,6 +106,9 @@ class Maze:
         pass
 
     def saveImage(self, defaultName: str) -> None:
+        """
+        Prompt the user to save the image somewhere on disk.
+        """
         f = filedialog.asksaveasfile(
             initialfile=defaultName,
             mode="wb",
@@ -101,6 +128,9 @@ class Maze:
 
 
     def outputMazeToConsole(self) -> None:
+        """
+        Output the maze to console.
+        """
         for row in self.mazeTiles:
             for tile in row:
                 print(str(tile), end="")
