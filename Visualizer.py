@@ -34,6 +34,7 @@ class Maze:
         
     def readMazeFromFile(self, filePath: str) -> None:
         data = ""
+        print(f"Opening file {filePath}")
         with open(filePath, "r") as file:
             data = file.read()
         
@@ -42,7 +43,8 @@ class Maze:
     def readMazeFromString(self, maze: str) -> None:
         self.mazeTiles = []
         splStr = maze.split("\n")
-        for row in splStr:
+        for i, row in enumerate(splStr):
+            print(f"Reading line {i}")
             self.mazeTiles.append([])
             for c in row:
                 self.mazeTiles[-1].append(Tile(Tile.getTileType(c)))
